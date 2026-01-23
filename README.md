@@ -32,15 +32,6 @@ The project aims to improve pricing transparency in the Kenyan real estate marke
 * Enabling scalable pricing analysis across cities and property types  
 * Providing interpretable outputs suitable for non-technical users (platform operators, real estate professionals)  
 
-**Key Recommendations:**
-
-* Deploy segmented fairness classifiers for rental and sale markets  
-* Add price fairness indicators to listing pages  
-* Use underpriced signals for deal discovery  
-* Provide sellers with dynamic pricing guidance  
-* Use fairness scores for neighborhood-level market intelligence  
-* Introduce fairness-based search filters  
-
 ---
 
 ## 🧠 Why Classification Instead of Regression?
@@ -132,3 +123,95 @@ Price fairness labels were created using **relative deviation from comparable li
 
 ```python
 price_diff_pct = (price - market_baseline) / market_baseline
+
+## 🏷️ Labeling Rules
+
+| Condition | Label |
+|-----------|-------|
+| diff < −0.15 | Underpriced |
+| −0.15 ≤ diff ≤ +0.15 | Fair |
+| diff > +0.15 | Overpriced |
+
+> These thresholds balance class distribution, business realism, and model learnability.
+
+---
+
+## 🧩 Segmented Modeling Strategy
+
+The real estate market has **two distinct regimes**:
+
+| Segment | Characteristics |
+|---------|----------------|
+| Rental | Monthly pricing, high turnover, amenity-driven |
+| Sale   | Capital pricing, long-term value, location-driven |
+
+> Training separate models for each segment reduces noise and improves predictive stability.
+
+---
+
+## 📌 Models Trained
+
+### 1️⃣ Baseline — Logistic Regression
+* Transparent coefficients  
+* Fast training  
+* Strong benchmarking baseline  
+
+### 2️⃣ Advanced — XGBoost & Random Forest
+* Capture nonlinear interactions and complex location effects  
+* Handle cross-feature dependencies  
+* Well-suited for structured tabular real estate data  
+* Random Forest provides a robust ensemble-based approach with feature importance insights, complementing XGBoost  
+
+---
+
+## 📈 Model Performance (Summary)
+
+| Model | Segment | F1 Score | ROC AUC |
+|-------|---------|----------|---------|
+| Logistic Regression | Rental | High | High |
+| Logistic Regression | Sale | High | High |
+| XGBoost | Rental | Very High | Very High |
+| XGBoost | Sale | Very High | Very High |
+| Random Forest | Rental | Very High | Very High |
+| Random Forest | Sale | Very High | Very High |
+
+**Key Observations:**
+
+* XGBoost and Random Forest outperform Logistic Regression  
+* Segmented models outperform pooled models  
+* Fair class is easiest to predict  
+* Underpriced and Overpriced classes achieve strong recall  
+* High ROC-AUC indicates excellent class separation  
+
+---
+
+## 📊 Visual Model Diagnostics
+
+The notebook includes:
+
+* Confusion matrices  
+* ROC curves  
+* Feature importance plots (XGBoost & Random Forest)  
+* Coefficient plots (Logistic Regression)  
+
+> These visualizations provide error analysis, interpretability, and business explainability.
+
+---
+
+## 🚀 Future Improvements
+
+* Hyperparameter tuning  
+* SHAP explainability  
+* Geographic embeddings  
+* Price anomaly scoring  
+* Time-aware models  
+* Real-time API deployment  
+
+---
+
+## 🧾 How to Run
+
+```bash
+pip install -r requirements.txt
+jupyter notebook FINAL_NOTEBOOK.ipynb
+
