@@ -115,12 +115,7 @@ New features were created to improve model expressiveness:
 
 ---
 
-## 🏷️ Price Fairness Labeling
-
-Price fairness labels were created using **relative deviation from comparable listings**:
-
-```python
-price_diff_pct = (price - market_baseline) / market_baseline
+`price_diff_pct = (price - market_baseline) / market_baseline`
 
 ## 🏷️ Labeling Rules
 
@@ -212,4 +207,3 @@ The notebook includes:
 ```bash
 pip install -r requirements.txt
 jupyter notebook FINAL_NOTEBOOK.ipynb
-
