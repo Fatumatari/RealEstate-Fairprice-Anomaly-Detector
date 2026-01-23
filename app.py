@@ -35,17 +35,16 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     state = st.selectbox("State/County", ["Nairobi", "Kiambu", "Kajiado", "Mombasa"])
-    locality = st.text_input("Locality", placeholder="e.g., Westlands, Embakasi")
     category = st.selectbox("Listing Category", ["For Rent", "For Sale"])
     property_type = st.selectbox("Property Type", ["House", "Apartment"])
-    
-with col2:
     sub_type = st.selectbox("Sub Type", [
         "Bungalow", "Maisonette", "Townhouse", "Villa", "Mansion",
         "Detached Duplex", "Semi-Detached Duplex", "Studio Apartment",
         "Flat & Apartment", "Penthouse", "Bedsitter (Single Room)",
         "Block of Flats", "Missing"
     ])
+
+with col2:
     bedrooms = st.number_input("Bedrooms", min_value=0, max_value=10, value=2)
     bathrooms = st.number_input("Bathrooms", min_value=0, max_value=10, value=2)
     toilets = st.number_input("Toilets", min_value=0, max_value=10, value=2)
