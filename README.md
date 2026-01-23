@@ -273,6 +273,4 @@ FairPrice Check demonstrates how supervised machine learning can be used to tran
 * Michelle Maina
 * Faith Kanyuki
 * Fatuma Tari
-* Michelle Maina
-* Faith Kanyuki
-* Fatuma Tari
+
