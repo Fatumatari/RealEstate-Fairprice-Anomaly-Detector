@@ -1,303 +1,134 @@
-🏠 FairPrice: Real Estate Price Fairness Classification
+# 🏠 FairPrice: Real Estate Price Fairness Classification
 
 A Machine Learning System for Detecting Underpriced, Fairly Priced, and Overpriced Listings
 
-📌 Project Overview
+---
 
-The real estate market suffers from pricing opacity. Buyers, renters, sellers, and agents often rely on intuition or incomplete comparables to judge whether a property is reasonably priced. This leads to:
+## 📌 Project Overview
 
-Overpriced listings staying too long on the market
+The real estate market suffers from **pricing opacity**. Buyers, renters, sellers, and agents often rely on intuition or incomplete comparables to judge whether a property is reasonably priced. This can lead to:
 
-Underpriced listings causing seller losses
+* Overpriced listings staying too long on the market  
+* Underpriced listings causing seller losses  
+* Poor negotiation outcomes  
+* Reduced trust in listing platforms  
 
-Poor negotiation outcomes
+To address this, we built a **machine learning classification system** that labels property listings as:
 
-Reduced trust in listing platforms
+* **Underpriced**  
+* **Fairly Priced**  
+* **Overpriced**  
 
-This project builds a machine learning classification system that labels property listings as:
+Unlike traditional price prediction (a noisy regression task), this system focuses on **relative price fairness**, producing outputs that are **interpretable, actionable, and aligned with real-world decision making**.
 
-Underpriced
+---
 
-Fairly Priced
+## 🎯 Business Objectives
 
-Overpriced
+The project aims to improve pricing transparency in the Kenyan real estate market by:
 
-Instead of predicting exact prices (a noisy regression task), this system focuses on relative price fairness, producing outputs that are interpretable, actionable, and aligned with real-world decision making.
+* Classifying property listings into underpriced, fair, or overpriced categories  
+* Supporting better pricing decisions for buyers, renters, sellers, and agents  
+* Enabling scalable pricing analysis across cities and property types  
+* Providing interpretable outputs suitable for non-technical users (platform operators, real estate professionals)  
 
-🎯 Business Objectives
+**Key Recommendations:**
 
-Classify property listings into underpriced, fair, or overpriced categories
+* Deploy segmented fairness classifiers for rental and sale markets  
+* Add price fairness indicators to listing pages  
+* Use underpriced signals for deal discovery  
+* Provide sellers with dynamic pricing guidance  
+* Use fairness scores for neighborhood-level market intelligence  
+* Introduce fairness-based search filters  
 
-Support better pricing decisions for buyers, renters, and sellers
+---
 
-Improve pricing transparency in real estate markets
-
-Enable scalable pricing analysis across cities and property types
-
-Provide interpretable model outputs for non-technical users
-
-🧠 Why Classification Instead of Regression?
+## 🧠 Why Classification Instead of Regression?
 
 Traditional price prediction models are:
 
-Highly sensitive to outliers
+* Highly sensitive to outliers  
+* Unstable in heterogeneous markets  
+* Hard to interpret for end users  
 
-Unstable in heterogeneous markets
+By reframing pricing as a **multi-class classification problem**, we:
 
-Hard to interpret for end users
+* Increase robustness to noise  
+* Align with real-world decision logic  
+* Produce directly actionable labels  
+* Improve interpretability  
 
-This project reframes pricing as a multi-class classification problem, which:
+---
 
-Is more robust to noise
+## 📂 Dataset Description
 
-Aligns with real-world decision logic
+The cleaned and feature-engineered dataset contains **9,091 property listings** with fields such as:
 
-Produces directly actionable labels
+* `price` (capped for modeling stability) and `price_raw` (original)  
+* Bedrooms, bathrooms, toilets, parking  
+* Furnished, serviced, shared  
+* Category (For Rent / For Sale), type, sub_type  
+* State, locality, listdate  
 
-Improves interpretability
+**Capping Rules Applied:**
 
-📂 Dataset Description
+| Feature | Lower Bound | Upper Bound |
+|---------|------------|------------|
+| Bedrooms | 0 | 10 |
+| Bathrooms | 0 | 10 |
+| Parking | 0 | 10 |
+| Rent Price | 5,500 | 600,000 |
+| Sale Price | 600,000 | 100,000,000 |
 
-The cleaned and feature-engineered dataset contains 9,091 property listings with the following structure:
+Raw features (*_raw) were retained for **anomaly detection** and interpretability.
 
-Key Fields
+---
 
-price (capped for modeling stability)
-
-price_raw (original uncapped value)
-
-bedrooms, bathrooms, toilets, parking
-
-furnished, serviced, shared
-
-category (For Rent / For Sale)
-
-type, sub_type
-
-state, locality
-
-listdate
-
-Capping Rules Applied
-
-Feature	Lower Bound	Upper Bound
-Bedrooms	0	10
-Bathrooms	0	10
-Parking	0	10
-Rent Price	5,500	600,000
-Sale Price	600,000	100,000,000
-
-The raw versions (*_raw) were retained for anomaly detection and interpretability.
-
-🔍 Exploratory Data Analysis (EDA)
+## 🔍 Exploratory Data Analysis (EDA)
 
 EDA was conducted to understand market structure, pricing dynamics, and feature relationships.
 
-Key Analyses
+**Key Analyses:**
 
-Distribution of prices (rent vs sale)
+* Distribution of prices (rent vs sale)  
+* Price trends over time  
+* Property types and sub-types  
+* Geographic price differences (state & locality)  
+* Feature distributions (bedrooms, bathrooms, amenities)  
+* Correlation heatmaps  
+* Category-wise comparisons  
 
-Price trends over time
+**Key Observations:**
 
-Property types and sub-types
+* Heavy price skewness  
+* Strong location effects  
+* Nonlinear relationships  
+* Distinct rental vs sale market regimes  
 
-Geographic price differences (state & locality)
+**Visualizations included:**
 
-Feature distributions (bedrooms, bathrooms, amenities)
+* Price distribution histograms  
+* Listings over time  
+* Average price by property type  
+* Geographic price comparisons  
+* Correlation heatmaps  
 
-Correlation heatmaps
+---
 
-Category-wise comparisons
+## 🛠️ Feature Engineering
 
-Key Visualizations
+New features were created to improve model expressiveness:
 
-📊 Price distribution histograms
+* **Temporal features:** year, month, day_of_week  
+* **One-hot encoding** for category, type, sub_type, state  
+* **Binary indicators** for amenities  
+* Capped numerical features while retaining raw features for anomaly detection  
 
-📈 Listings over time
+---
 
-🏘️ Average price by property type
+## 🏷️ Price Fairness Labeling
 
-🌍 Geographic price comparisons
+Price fairness labels were created using **relative deviation from comparable listings**:
 
-🔥 Correlation heatmaps
-
-These visuals revealed:
-
-Heavy price skewness
-
-Strong location effects
-
-Nonlinear relationships
-
-Distinct rental vs sale market regimes
-
-🛠️ Feature Engineering
-
-New features were engineered to improve model expressiveness:
-
-Temporal features: year, month, day_of_week
-
-One-hot encoding for:
-
-category
-
-type
-
-sub_type
-
-state
-
-Binary indicators for amenities
-
-Capped numerical features
-
-Retained raw features for anomaly detection
-
-🏷️ Price Fairness Labeling
-
-Price fairness labels were created using relative deviation from comparable listings:
-
+```python
 price_diff_pct = (price - market_baseline) / market_baseline
-
-
-Labeling Rule
-
-Condition	Label
-diff < −0.15	Underpriced
-−0.15 ≤ diff ≤ +0.15	Fair
-diff > +0.15	Overpriced
-
-This threshold was chosen to balance:
-
-Class distribution
-
-Business realism
-
-Model learnability
-
-🧩 Segmented Modeling Strategy
-
-The real estate market operates under two structurally distinct regimes:
-
-Segment	Characteristics
-Rental	Monthly pricing, high turnover, amenity-driven
-Sale	Capital pricing, long-term value, location-driven
-
-Training separate models reduces cross-market noise and improves predictive stability.
-
-📌 Models Trained
-1️⃣ Baseline — Logistic Regression
-
-Used as a transparent reference model:
-
-Interpretable coefficients
-
-Fast training
-
-Clear bias–variance tradeoffs
-
-Strong benchmarking baseline
-
-2️⃣ Advanced — XGBoost
-
-Used to capture:
-
-Nonlinear interactions
-
-Feature thresholds
-
-Complex location effects
-
-Cross-feature dependencies
-
-XGBoost is well-suited for structured tabular real estate data.
-
-📈 Model Performance (Summary)
-Model	Segment	F1 Score	ROC AUC
-Logistic Regression	Rental	High	High
-Logistic Regression	Sale	High	High
-XGBoost	Rental	Very High	Very High
-XGBoost	Sale	Very High	Very High
-
-Key Observations
-
-XGBoost consistently outperforms Logistic Regression
-
-Segmented models outperform pooled models
-
-Fair class is easiest to predict
-
-Underpriced and Overpriced classes achieve strong recall
-
-High ROC-AUC indicates excellent class separation
-
-📊 Visual Model Diagnostics
-
-The notebook includes:
-
-Confusion matrices
-
-ROC curves
-
-Feature importance plots
-
-Coefficient plots (Logistic Regression)
-
-These visualizations provide:
-
-Error analysis
-
-Interpretability
-
-Model trustworthiness
-
-Business explainability
-
-💼 Business Value
-Buyers & Renters
-
-Identify good deals
-
-Avoid overpriced listings
-
-Improve negotiation leverage
-
-Reduce financial risk
-
-Sellers & Property Owners
-
-Set competitive prices
-
-Reduce time on market
-
-Increase transaction success
-
-Agents & Platforms
-
-Add objective pricing indicators
-
-Improve user trust
-
-Differentiate with intelligent insights
-
-🧠 Key Design Decisions
-Decision	Rationale
-Classification framing	More interpretable and robust than regression
-Feature capping	Reduces outlier influence
-Retaining raw features	Enables anomaly detection
-Segmented modeling	Reduces regime noise
-Logistic baseline	Interpretability
-XGBoost advanced	Nonlinear learning
-🚀 Future Improvements
-
-Hyperparameter tuning
-
-SHAP explainability
-
-Geographic embeddings
-
-Price anomaly scoring
-
-Time-aware models
-
-Real-time API deployment
