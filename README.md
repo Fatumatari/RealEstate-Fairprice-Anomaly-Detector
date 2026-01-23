@@ -193,7 +193,8 @@ The trained model was serialized as part of a full preprocessing + modeling pipe
   * High number of trees
   * One-hot encoded categorical features
 
-* Slow load times were observed during deployment
+* Slow load times were observed during deployment.
+* Deployment link: https://fmk4v2pivccvxcycxynqqf.streamlit.app/
 
 **Mitigation Strategies**
 
