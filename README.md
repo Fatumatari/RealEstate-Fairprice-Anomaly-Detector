@@ -144,11 +144,6 @@ The final feature matrix excludes the target variable (`price_label`) to prevent
 ---
 
 ## 📌 Models Trained
-This project treats price fairness as a **multiclass classification** problem with three classes:
-
-* Underpriced
-* Fairly priced
-* Overpriced
 
 ### 1️⃣ Baseline — Logistic Regression
 Used as a linear baseline with class weighting to handle imbalance.  
@@ -200,7 +195,7 @@ The trained model was serialized as part of a full preprocessing + modeling pipe
 
 * Slow load times were observed during deployment
 
-# Mitigation Strategies
+**Mitigation Strategies**
 
 * Reduced number of estimators
 * Considered tree depth pruning
@@ -231,15 +226,12 @@ Based on the model outputs and exploratory analysis, the following business reco
   * Underpriced listings can be repriced to capture lost revenue
   * Fairly priced listings can be fast-tracked for marketing and promotion
 
-* **Segment pricing strategies by location and property subtype**
-  EDA shows that pricing behavior varies significantly by region and property subtype. Localized pricing rules should be layered on top of the model outputs.
+* **Segment pricing strategies by sale/rent, location and property type** 
+  EDA shows that pricing behavior varies significantly by sale/rent, region and property subtype. Localized pricing rules should be layered on top of the model outputs.
 
 * **Leverage explainability for stakeholder trust**
   Feature importance and future SHAP explanations should be used to justify model-driven recommendations to clients and internal teams.
-
-* **Deploy as a lightweight API or web tool**
-  A simple web interface can allow users to input property attributes and receive real-time pricing fairness feedback.
-
+  
 ---
 
 ## ♻️ Future Work
@@ -273,4 +265,14 @@ Based on the model outputs and exploratory analysis, the following business reco
 
 FairPrice Check demonstrates how supervised machine learning can be used to transform noisy real estate listing data into a practical, interpretable pricing fairness tool. By framing price assessment as a classification task rather than a regression problem, the system provides actionable guidance that is easier for end users to trust and apply in real-world decision-making.
 
-The final XGBoost model delivers strong performance, robustness, and scalability, making it suitable for deployment as a real-time pricing advisory service.
+## 🧑‍🧑‍🧒‍🧒 Collaborators
+* Jeremiah Bii                            
+* Faith Kanyuki
+* Michelle Ngunya
+* Kelvin Omina
+* Michelle Maina
+* Faith Kanyuki
+* Fatuma Tari
+* Michelle Maina
+* Faith Kanyuki
+* Fatuma Tari
