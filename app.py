@@ -45,48 +45,49 @@ with col1:
     ])
 
 with col2:
-    bedrooms = st.number_input("Bedrooms", min_value=0, max_value=10, value=2)
-    bathrooms = st.number_input("Bathrooms", min_value=0, max_value=10, value=2)
-    toilets = st.number_input("Toilets", min_value=0, max_value=10, value=2)
+    bedrooms = st.number_input("Bedrooms", min_value=0, max_value=10, value=2, step=1)
+    bathrooms = st.number_input("Bathrooms", min_value=0, max_value=10, value=2, step=1)
+    toilets = st.number_input("Toilets", min_value=0, max_value=10, value=2, step=1)
+    parking = st.number_input("Parking Spaces", min_value=0, max_value=10, value=1, step=1)
 
 with col3:
-    parking = st.number_input("Parking Spaces", min_value=0, max_value=10, value=1)
-    furnished = st.selectbox("Furnished", [0, 1])
-    serviced = st.selectbox("Serviced", [0, 1])
-    shared = st.selectbox("Shared", [0, 1])
-    price = st.number_input("Listed Price (KES)", min_value=0, value=50000)
+    furnished = st.selectbox("Furnished", [0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
+    serviced = st.selectbox("Serviced", [0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
+    shared = st.selectbox("Shared", [0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
+    price_qualifier = st.selectbox("Price Qualifier", ["per month", "Sale", "per annum"])
 
 # Prediction button
 if st.button("🔍 Check Price Fairness", type="primary"):
-    # Create input dataframe
+    
+    # Create input dataframe with all required features
+    # These are the features expected by your trained pipeline
     input_data = pd.DataFrame({
-        'bedrooms': [bedrooms],
-        'bathrooms': [bathrooms],
-        'toilets': [toilets],
-        'parking': [parking],
-        'furnished': [furnished],
-        'serviced': [serviced],
-        'shared': [shared],
+        'bedrooms': [int(bedrooms)],
+        'bathrooms': [int(bathrooms)],
+        'toilets': [int(toilets)],
+        'parking': [int(parking)],
+        'furnished': [int(furnished)],
+        'serviced': [int(serviced)],
+        'shared': [int(shared)],
         'type': [property_type],
         'sub_type': [sub_type],
         'state': [state],
         'category': [category],
-        'bedrooms_raw': [bedrooms],
-        'bathrooms_raw': [bathrooms],
-        'parking_raw': [parking],
-        'price_raw': [price]
+        'price_qualifier': [price_qualifier],
+        'bedrooms_raw': [float(bedrooms)],
+        'bathrooms_raw': [float(bathrooms)],
+        'parking_raw': [float(parking)],
+        # Engineered features - these will be computed by the pipeline
+        'price_position': [0.0],
+        'price_per_bedroom': [0.0],
+        'price_per_bathroom': [0.0],
+        'bedroom_deviation': [0.0],
+        'bathroom_deviation': [0.0],
+        'location_density': [0.05]
     })
     
-    # Add engineered features (placeholder values - in production, compute from training stats)
-    input_data['price_position'] = 0
-    input_data['price_per_bedroom'] = price / (bedrooms + 1)
-    input_data['price_per_bathroom'] = price / (bathrooms + 1)
-    input_data['bedroom_deviation'] = 0
-    input_data['bathroom_deviation'] = 0
-    input_data['location_density'] = 0.05
-    
     try:
-        # Make prediction
+        # Make prediction using the pipeline
         prediction = model.predict(input_data)
         probabilities = model.predict_proba(input_data)[0]
         
@@ -119,15 +120,29 @@ if st.button("🔍 Check Price Fairness", type="primary"):
         # Interpretation
         st.subheader("💡 Interpretation")
         if predicted_class == "Underpriced":
-            st.success("This property appears to be priced below market rates. It may represent a good deal!")
+            st.success("✅ This property appears to be priced below market rates. It may represent a good deal!")
         elif predicted_class == "Fairly Priced":
-            st.info("This property is priced within normal market range for similar properties in this area.")
+            st.info("ℹ️ This property is priced within normal market range for similar properties in this area.")
         else:
-            st.warning("This property appears to be priced above market rates. Consider negotiating or looking for alternatives.")
+            st.warning("⚠️ This property appears to be priced above market rates. Consider negotiating or looking for alternatives.")
+        
+        # Show probability distribution chart
+        st.subheader("📈 Probability Distribution")
+        prob_df = pd.DataFrame({
+            'Class': class_names,
+            'Probability': probabilities
+        })
+        st.bar_chart(prob_df.set_index('Class'))
             
     except Exception as e:
-        st.error(f"Error making prediction: {e}")
+        st.error(f"❌ Error making prediction: {e}")
+        st.error("Please ensure all fields are filled correctly.")
+        st.exception(e)  # Show detailed error for debugging
 
 # Footer
 st.markdown("---")
-st.markdown("**Note:** This tool provides guidance based on historical data and should be used alongside professional real estate advice.")
+st.markdown("""
+**Note:** This tool provides guidance based on historical data and should be used alongside professional real estate advice.
+
+**About the Model:** This prediction is based on an XGBoost classifier trained on real estate data from Kenya.
+""")
