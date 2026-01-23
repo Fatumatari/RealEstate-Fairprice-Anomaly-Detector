@@ -1,7 +1,5 @@
 # 🏠 FairPrice: Real Estate Price Fairness Classification
 
-A Machine Learning System for Detecting Underpriced, Fairly Priced, and Overpriced Listings
-
 ---
 
 ## 📌 Project Overview
