@@ -20,7 +20,10 @@ def load_model_and_stats():
         with open('models/training_stats.pkl', 'rb') as f:
             stats = pickle.load(f)
         
-        return model, stats
+        with open('models/state_locality_mapping.pkl', 'rb') as f:
+            state_locality_map = pickle.load(f)
+        
+        return model, stats, state_locality_map
     except FileNotFoundError as e:
         st.error(f"❌ Model files not found. Please ensure models are trained and saved in the 'models' folder.")
         st.stop()
@@ -28,7 +31,7 @@ def load_model_and_stats():
         st.error(f"❌ Error loading model: {e}")
         st.stop()
 
-model, stats = load_model_and_stats()
+model, stats, state_locality_map = load_model_and_stats()
 
 # Convert location_price_stats back to DataFrame
 location_stats_df = pd.DataFrame(stats['location_price_stats'])
@@ -49,8 +52,8 @@ state = st.sidebar.selectbox(
     options=sorted(stats['valid_states'])
 )
 
-# Filter localities based on selected state - get all available
-available_localities = sorted(stats['valid_localities'])
+# Filter localities based on selected state
+available_localities = state_locality_map.get(state, [])
 
 locality = st.sidebar.selectbox(
     "Locality *",
@@ -160,18 +163,32 @@ if st.sidebar.button("🔍 Analyze Price", type="primary", use_container_width=T
     location_density = stats['location_density'].get(locality, 0.01)
     
     # Create input dataframe matching training feature order
+    # Model expects these exact columns in this order (from feature_names_in_):
+    # ['id', 'price_qualifier', 'bedrooms', 'bathrooms', 'toilets', 'furnished',
+    #  'serviced', 'shared', 'parking', 'category', 'type', 'sub_type', 'state',
+    #  'sub_locality', 'listdate', 'bedrooms_raw', 'bathrooms_raw', 'parking_raw',
+    #  'price_position', 'price_per_bedroom', 'price_per_bathroom',
+    #  'bedroom_deviation', 'bathroom_deviation', 'location_density']
+    
     input_data = pd.DataFrame({
+        'id': [0],
+        'price_qualifier': [''],
         'bedrooms': [bedrooms],
         'bathrooms': [bathrooms],
         'toilets': [toilets],
-        'parking': [parking],
         'furnished': [1 if furnished else 0],
         'serviced': [1 if serviced else 0],
         'shared': [1 if shared else 0],
-        'state': [state],
+        'parking': [parking],
+        'category': [category],
         'type': [property_type],
         'sub_type': [sub_type],
-        'category': [category],
+        'state': [state],
+        'sub_locality': [''],
+        'listdate': ['2020-01-01'],  # Placeholder date as string
+        'bedrooms_raw': [bedrooms],
+        'bathrooms_raw': [bathrooms],
+        'parking_raw': [parking],
         'price_position': [price_position],
         'price_per_bedroom': [price_per_bedroom],
         'price_per_bathroom': [price_per_bathroom],
