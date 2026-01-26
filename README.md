@@ -146,7 +146,7 @@ The final feature matrix excludes the target variable (`price_label`) to prevent
 ## 📌 Models Trained
 
 ### 1️⃣ Baseline — Logistic Regression
-Used as a linear baseline with class weighting to handle imbalance.  
+Used as a baseline with class weighting to handle imbalance.  
 
 ### 2️⃣ Advanced — Tree-Based Models
 * **Random Forest Classifier**
@@ -168,7 +168,7 @@ Used as a linear baseline with class weighting to handle imbalance.
 
 |* **Logistic Regression**
 
-  * Served as a strong linear baseline
+  * Served as a strong baseline
   * Struggled with nonlinear relationships and complex interactions
 
 * **Random Forest**
