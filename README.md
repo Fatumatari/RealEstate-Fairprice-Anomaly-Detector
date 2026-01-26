@@ -268,10 +268,10 @@ FairPrice Check demonstrates how supervised machine learning can be used to tran
 
 ## 🧑‍🧑‍🧒‍🧒 Collaborators
 * Jeremiah Bii                            
-* Faith Kanyuki
+* Faith Njuguna
 * Michelle Ngunya
 * Kelvin Omina
 * Michelle Maina
-* Faith Kanyuki
+* Joanne Kariuki
 * Fatuma Tari
 
