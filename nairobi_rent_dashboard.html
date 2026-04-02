@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_c67702b3f073adb1c184ef6fb9a5e13a {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>
+    
+    
+<div style="
+    position: fixed;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background-color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    font-size: 18px;
+    font-weight: bold;
+">
+Nairobi Rental Price Dashboard
+</div>
+    
+            <div class="folium-map" id="map_c67702b3f073adb1c184ef6fb9a5e13a" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_c67702b3f073adb1c184ef6fb9a5e13a = L.map(
+                "map_c67702b3f073adb1c184ef6fb9a5e13a",
+                {
+                    center: [-1.286, 36.82],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_6eebc27fcdca2fd07bbbc6bd5d62bc80 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_6eebc27fcdca2fd07bbbc6bd5d62bc80.addTo(map_c67702b3f073adb1c184ef6fb9a5e13a);
+        
+    
+    var color_map_5c18252e228df2548aee4ed1045e109d = {};
+
+    
+    color_map_5c18252e228df2548aee4ed1045e109d.color = d3.scale.threshold()
+              .domain([6000.0, 6689.37875751503, 7378.75751503006, 8068.136272545091, 8757.51503006012, 9446.89378757515, 10136.272545090182, 10825.65130260521, 11515.03006012024, 12204.40881763527, 12893.787575150302, 13583.16633266533, 14272.545090180362, 14961.92384769539, 15651.302605210421, 16340.68136272545, 17030.06012024048, 17719.43887775551, 18408.81763527054, 19098.19639278557, 19787.575150300603, 20476.95390781563, 21166.33266533066, 21855.711422845692, 22545.090180360723, 23234.46893787575, 23923.84769539078, 24613.226452905812, 25302.605210420843, 25991.98396793587, 26681.3627254509, 27370.741482965932, 28060.120240480963, 28749.498997995994, 29438.87775551102, 30128.256513026052, 30817.635270541083, 31507.014028056114, 32196.39278557114, 32885.77154308617, 33575.150300601206, 34264.52905811623, 34953.90781563126, 35643.286573146295, 36332.66533066132, 37022.04408817635, 37711.422845691384, 38400.80160320641, 39090.180360721446, 39779.55911823647, 40468.9378757515, 41158.316633266535, 41847.69539078156, 42537.07414829659, 43226.452905811624, 43915.83166332665, 44605.210420841686, 45294.58917835671, 45983.96793587174, 46673.346693386775, 47362.7254509018, 48052.10420841684, 48741.482965931864, 49430.86172344689, 50120.240480961926, 50809.61923847695, 51498.99799599199, 52188.376753507015, 52877.75551102204, 53567.13426853708, 54256.513026052104, 54945.89178356713, 55635.270541082165, 56324.64929859719, 57014.02805611223, 57703.406813627254, 58392.78557114228, 59082.164328657316, 59771.54308617234, 60460.92184368738, 61150.300601202405, 61839.67935871743, 62529.05811623247, 63218.436873747494, 63907.81563126252, 64597.194388777556, 65286.57314629258, 65975.95190380761, 66665.33066132265, 67354.70941883768, 68044.0881763527, 68733.46693386773, 69422.84569138277, 70112.22444889779, 70801.60320641282, 71490.98196392786, 72180.36072144289, 72869.73947895791, 73559.11823647295, 74248.49699398798, 74937.875751503, 75627.25450901804, 76316.63326653307, 77006.01202404809, 77695.39078156312, 78384.76953907816, 79074.14829659318, 79763.52705410821, 80452.90581162325, 81142.28456913828, 81831.6633266533, 82521.04208416834, 83210.42084168337, 83899.79959919839, 84589.17835671343, 85278.55711422846, 85967.93587174348, 86657.31462925852, 87346.69338677355, 88036.07214428858, 88725.4509018036, 89414.82965931864, 90104.20841683367, 90793.5871743487, 91482.96593186373, 92172.34468937876, 92861.72344689378, 93551.10220440882, 94240.48096192385, 94929.85971943887, 95619.2384769539, 96308.61723446894, 96997.99599198397, 97687.374749499, 98376.75350701403, 99066.13226452906, 99755.51102204408, 100444.88977955912, 101134.26853707415, 101823.64729458917, 102513.02605210421, 103202.40480961924, 103891.78356713426, 104581.1623246493, 105270.54108216433, 105959.91983967937, 106649.29859719439, 107338.67735470942, 108028.05611222445, 108717.43486973947, 109406.81362725451, 110096.19238476954, 110785.57114228456, 111474.9498997996, 112164.32865731463, 112853.70741482965, 113543.08617234469, 114232.46492985972, 114921.84368737476, 115611.22244488978, 116300.60120240481, 116989.97995991984, 117679.35871743486, 118368.7374749499, 119058.11623246493, 119747.49498997995, 120436.87374749499, 121126.25250501002, 121815.63126252504, 122505.01002004008, 123194.38877755511, 123883.76753507015, 124573.14629258517, 125262.5250501002, 125951.90380761524, 126641.28256513026, 127330.66132264529, 128020.04008016032, 128709.41883767534, 129398.79759519038, 130088.17635270541, 130777.55511022045, 131466.93386773547, 132156.3126252505, 132845.69138276554, 133535.07014028056, 134224.44889779558, 134913.82765531063, 135603.20641282565, 136292.58517034067, 136981.96392785572, 137671.34268537074, 138360.72144288578, 139050.1002004008, 139739.47895791582, 140428.85771543087, 141118.2364729459, 141807.6152304609, 142496.99398797596, 143186.37274549098, 143875.751503006, 144565.13026052105, 145254.50901803607, 145943.8877755511, 146633.26653306614, 147322.64529058116, 148012.02404809618, 148701.40280561123, 149390.78156312625, 150080.16032064127, 150769.53907815632, 151458.91783567134, 152148.29659318636, 152837.6753507014, 153527.05410821643, 154216.43286573148, 154905.8116232465, 155595.19038076152, 156284.56913827657, 156973.94789579159, 157663.3266533066, 158352.70541082165, 159042.08416833667, 159731.4629258517, 160420.84168336674, 161110.22044088176, 161799.59919839678, 162488.97795591183, 163178.35671342685, 163867.73547094187, 164557.11422845692, 165246.49298597194, 165935.87174348696, 166625.250501002, 167314.62925851703, 168004.00801603205, 168693.3867735471, 169382.76553106212, 170072.14428857717, 170761.5230460922, 171450.9018036072, 172140.28056112226, 172829.65931863728, 173519.0380761523, 174208.41683366735, 174897.79559118237, 175587.1743486974, 176276.55310621244, 176965.93186372746, 177655.31062124248, 178344.68937875752, 179034.06813627254, 179723.44689378756, 180412.8256513026, 181102.20440881763, 181791.58316633265, 182480.9619238477, 183170.34068136272, 183859.71943887774, 184549.0981963928, 185238.4769539078, 185927.85571142283, 186617.23446893788, 187306.6132264529, 187995.99198396795, 188685.37074148297, 189374.749498998, 190064.12825651304, 190753.50701402806, 191442.88577154308, 192132.26452905813, 192821.64328657315, 193511.02204408817, 194200.40080160322, 194889.77955911824, 195579.15831663326, 196268.5370741483, 196957.91583166333, 197647.29458917835, 198336.6733466934, 199026.05210420841, 199715.43086172343, 200404.80961923848, 201094.1883767535, 201783.56713426852, 202472.94589178357, 203162.3246492986, 203851.70340681364, 204541.08216432866, 205230.46092184368, 205919.83967935873, 206609.21843687375, 207298.59719438877, 207987.97595190382, 208677.35470941884, 209366.73346693386, 210056.1122244489, 210745.49098196393, 211434.86973947895, 212124.248496994, 212813.62725450902, 213503.00601202404, 214192.3847695391, 214881.7635270541, 215571.14228456913, 216260.52104208418, 216949.8997995992, 217639.27855711422, 218328.65731462926, 219018.03607214428, 219707.4148296593, 220396.79358717435, 221086.17234468937, 221775.55110220442, 222464.92985971944, 223154.30861723446, 223843.6873747495, 224533.06613226453, 225222.44488977955, 225911.8236472946, 226601.20240480962, 227290.58116232464, 227979.9599198397, 228669.3386773547, 229358.71743486973, 230048.09619238478, 230737.4749498998, 231426.85370741482, 232116.23246492987, 232805.6112224449, 233494.9899799599, 234184.36873747496, 234873.74749498998, 235563.126252505, 236252.50501002005, 236941.88376753507, 237631.2625250501, 238320.64128256514, 239010.02004008016, 239699.3987975952, 240388.77755511022, 241078.15631262524, 241767.5350701403, 242456.9138276553, 243146.29258517033, 243835.67134268538, 244525.0501002004, 245214.42885771542, 245903.80761523047, 246593.1863727455, 247282.5651302605, 247971.94388777556, 248661.32264529058, 249350.7014028056, 250040.08016032065, 250729.45891783567, 251418.8376753507, 252108.21643286574, 252797.59519038076, 253486.97394789578, 254176.35270541083, 254865.73146292585, 255555.1102204409, 256244.48897795592, 256933.86773547094, 257623.24649298599, 258312.625250501, 259002.00400801603, 259691.38276553107, 260380.7615230461, 261070.1402805611, 261759.51903807616, 262448.89779559115, 263138.2765531062, 263827.65531062125, 264517.03406813624, 265206.4128256513, 265895.79158316634, 266585.17034068133, 267274.5490981964, 267963.92785571143, 268653.3066132265, 269342.68537074147, 270032.0641282565, 270721.44288577157, 271410.82164328656, 272100.2004008016, 272789.57915831666, 273478.95791583165, 274168.3366733467, 274857.71543086175, 275547.09418837674, 276236.4729458918, 276925.85170340684, 277615.2304609218, 278304.6092184369, 278993.9879759519, 279683.3667334669, 280372.74549098196, 281062.124248497, 281751.503006012, 282440.88176352705, 283130.2605210421, 283819.6392785571, 284509.01803607214, 285198.3967935872, 285887.7755511022, 286577.15430861723, 287266.5330661323, 287955.9118236473, 288645.2905811623, 289334.66933867737, 290024.04809619236, 290713.4268537074, 291402.80561122246, 292092.18436873745, 292781.5631262525, 293470.94188376755, 294160.32064128254, 294849.6993987976, 295539.07815631264, 296228.4569138276, 296917.8356713427, 297607.2144288577, 298296.5931863727, 298985.97194388777, 299675.3507014028, 300364.72945891786, 301054.10821643285, 301743.4869739479, 302432.86573146295, 303122.24448897794, 303811.623246493, 304501.00200400804, 305190.38076152303, 305879.7595190381, 306569.13827655313, 307258.5170340681, 307947.89579158317, 308637.2745490982, 309326.6533066132, 310016.03206412826, 310705.4108216433, 311394.7895791583, 312084.16833667335, 312773.5470941884, 313462.9258517034, 314152.30460921844, 314841.6833667335, 315531.0621242485, 316220.4408817635, 316909.8196392786, 317599.19839679357, 318288.5771543086, 318977.95591182366, 319667.33466933866, 320356.7134268537, 321046.09218436875, 321735.47094188374, 322424.8496993988, 323114.22845691384, 323803.60721442883, 324492.9859719439, 325182.36472945893, 325871.7434869739, 326561.122244489, 327250.501002004, 327939.879759519, 328629.25851703406, 329318.6372745491, 330008.0160320641, 330697.39478957915, 331386.7735470942, 332076.1523046092, 332765.53106212424, 333454.9098196393, 334144.28857715434, 334833.6673346693, 335523.0460921844, 336212.4248496994, 336901.8036072144, 337591.18236472947, 338280.5611222445, 338969.9398797595, 339659.31863727455, 340348.6973947896, 341038.0761523046, 341727.45490981964, 342416.8336673347, 343106.2124248497, 343795.59118236473, 344484.9699398798, 345174.3486973948, 345863.7274549098, 346553.1062124249, 347242.48496993986, 347931.8637274549, 348621.24248496996, 349310.62124248495, 350000.0])
+              .range(['#ffffccff', '#ffffccff', '#ffffcbff', '#ffffcaff', '#fffec9ff', '#fffec9ff', '#fffec8ff', '#fffdc7ff', '#fffdc7ff', '#fffdc6ff', '#fffdc5ff', '#fffcc5ff', '#fffcc4ff', '#fffcc3ff', '#fffbc2ff', '#fffbc2ff', '#fffbc1ff', '#fffbc0ff', '#fffac0ff', '#fffabfff', '#fffabeff', '#fff9bdff', '#fff9bdff', '#fff9bcff', '#fff9bbff', '#fff8bbff', '#fff8baff', '#fff8b9ff', '#fff7b8ff', '#fff7b8ff', '#fff7b7ff', '#fff7b6ff', '#fff6b6ff', '#fff6b5ff', '#fff6b4ff', '#fff5b4ff', '#fff5b3ff', '#fff5b2ff', '#fff4b1ff', '#fff4b1ff', '#fff4b0ff', '#fff4afff', '#fff3afff', '#fff3aeff', '#fff3adff', '#fff2acff', '#fff2acff', '#fff2abff', '#fff2aaff', '#fff1aaff', '#fff1a9ff', '#fff1a8ff', '#fff0a7ff', '#fff0a7ff', '#fff0a6ff', '#fff0a5ff', '#ffefa5ff', '#ffefa4ff', '#ffefa3ff', '#ffeea3ff', '#ffeea2ff', '#ffeea1ff', '#ffeea0ff', '#ffeda0ff', '#ffed9fff', '#ffed9eff', '#ffec9eff', '#ffec9dff', '#ffec9cff', '#ffeb9cff', '#ffeb9bff', '#ffeb9aff', '#ffea9aff', '#ffea99ff', '#ffea98ff', '#ffe998ff', '#ffe997ff', '#ffe996ff', '#ffe896ff', '#ffe895ff', '#ffe894ff', '#ffe794ff', '#ffe793ff', '#ffe792ff', '#ffe692ff', '#ffe691ff', '#ffe690ff', '#ffe68fff', '#ffe58fff', '#ffe58eff', '#ffe58dff', '#ffe48dff', '#ffe48cff', '#ffe48bff', '#ffe38bff', '#ffe38aff', '#ffe389ff', '#ffe289ff', '#ffe288ff', '#ffe287ff', '#ffe187ff', '#ffe186ff', '#ffe185ff', '#ffe085ff', '#ffe084ff', '#ffe083ff', '#ffdf83ff', '#ffdf82ff', '#ffdf81ff', '#ffde81ff', '#ffde80ff', '#ffde7fff', '#ffdd7fff', '#ffdd7eff', '#ffdd7dff', '#ffdc7dff', '#ffdc7cff', '#ffdc7bff', '#ffdc7bff', '#ffdb7aff', '#ffdb79ff', '#ffdb78ff', '#ffda78ff', '#ffda77ff', '#ffda76ff', '#fed976ff', '#fed975ff', '#fed874ff', '#fed774ff', '#fed773ff', '#fed672ff', '#fed572ff', '#fed571ff', '#fed470ff', '#fed470ff', '#fed36fff', '#fed26eff', '#fed26eff', '#fed16dff', '#fed06cff', '#fed06cff', '#fecf6bff', '#fecf6aff', '#fece6aff', '#fecd69ff', '#fecd68ff', '#fecc68ff', '#fecb67ff', '#fecb66ff', '#feca66ff', '#feca65ff', '#fec964ff', '#fec864ff', '#fec863ff', '#fec762ff', '#fec662ff', '#fec661ff', '#fec560ff', '#fec45fff', '#fec45fff', '#fec35eff', '#fec35dff', '#fec25dff', '#fec15cff', '#fec15bff', '#fec05bff', '#febf5aff', '#febf59ff', '#febe59ff', '#febe58ff', '#febd57ff', '#febc57ff', '#febc56ff', '#febb55ff', '#feba55ff', '#feba54ff', '#feb953ff', '#feb953ff', '#feb852ff', '#feb751ff', '#feb751ff', '#feb650ff', '#feb54fff', '#feb54fff', '#feb44eff', '#feb44dff', '#feb34dff', '#feb24cff', '#feb24cff', '#feb14bff', '#feb04bff', '#feb04bff', '#feaf4bff', '#feaf4aff', '#feae4aff', '#feae4aff', '#fead4aff', '#feac49ff', '#feac49ff', '#feab49ff', '#feab48ff', '#feaa48ff', '#fea948ff', '#fea948ff', '#fea847ff', '#fea847ff', '#fea747ff', '#fea647ff', '#fea646ff', '#fea546ff', '#fea546ff', '#fea446ff', '#fea345ff', '#fea345ff', '#fea245ff', '#fea245ff', '#fea144ff', '#fea044ff', '#fea044ff', '#fe9f44ff', '#fe9f43ff', '#fe9e43ff', '#fe9d43ff', '#fe9d43ff', '#fe9c42ff', '#fe9c42ff', '#fe9b42ff', '#fe9a42ff', '#fe9a41ff', '#fe9941ff', '#fe9941ff', '#fe9840ff', '#fe9740ff', '#fe9740ff', '#fe9640ff', '#fe963fff', '#fe953fff', '#fe943fff', '#fe943fff', '#fe933eff', '#fe933eff', '#fe923eff', '#fe923eff', '#fe913dff', '#fe903dff', '#fe903dff', '#fe8f3dff', '#fe8f3cff', '#fe8e3cff', '#fe8d3cff', '#fd8d3cff', '#fd8c3bff', '#fd8b3bff', '#fd8a3bff', '#fd883aff', '#fd873aff', '#fd863aff', '#fd853aff', '#fd8439ff', '#fd8339ff', '#fd8239ff', '#fd8138ff', '#fd8038ff', '#fd7f38ff', '#fd7e38ff', '#fd7d37ff', '#fd7c37ff', '#fd7b37ff', '#fd7a36ff', '#fd7936ff', '#fd7836ff', '#fd7736ff', '#fd7635ff', '#fd7535ff', '#fd7435ff', '#fd7334ff', '#fd7234ff', '#fd7134ff', '#fd7033ff', '#fd6f33ff', '#fd6e33ff', '#fd6d33ff', '#fd6c32ff', '#fd6b32ff', '#fd6a32ff', '#fd6931ff', '#fd6831ff', '#fd6731ff', '#fd6631ff', '#fd6530ff', '#fd6430ff', '#fd6330ff', '#fd622fff', '#fd612fff', '#fd602fff', '#fd5f2fff', '#fd5e2eff', '#fd5d2eff', '#fd5c2eff', '#fd5b2dff', '#fd5a2dff', '#fd592dff', '#fd582dff', '#fd572cff', '#fd562cff', '#fd552cff', '#fd542bff', '#fd532bff', '#fd522bff', '#fd512aff', '#fd502aff', '#fd4f2aff', '#fc4e2aff', '#fc4d29ff', '#fc4c29ff', '#fb4b29ff', '#fb4a29ff', '#fa4a29ff', '#fa4928ff', '#fa4828ff', '#f94728ff', '#f94628ff', '#f84527ff', '#f84427ff', '#f84427ff', '#f74327ff', '#f74226ff', '#f64126ff', '#f64026ff', '#f63f26ff', '#f53f26ff', '#f53e25ff', '#f43d25ff', '#f43c25ff', '#f43b25ff', '#f33a24ff', '#f33a24ff', '#f23924ff', '#f23824ff', '#f23724ff', '#f13623ff', '#f13523ff', '#f03523ff', '#f03423ff', '#f03322ff', '#ef3222ff', '#ef3122ff', '#ee3022ff', '#ee3022ff', '#ee2f21ff', '#ed2e21ff', '#ed2d21ff', '#ec2c21ff', '#ec2b20ff', '#ec2b20ff', '#eb2a20ff', '#eb2920ff', '#ea281fff', '#ea271fff', '#ea261fff', '#e9261fff', '#e9251fff', '#e8241eff', '#e8231eff', '#e8221eff', '#e7211eff', '#e7211dff', '#e6201dff', '#e61f1dff', '#e61e1dff', '#e51d1dff', '#e51c1cff', '#e41b1cff', '#e41b1cff', '#e31a1cff', '#e3191cff', '#e2191cff', '#e2181cff', '#e1181cff', '#e0181cff', '#e0171dff', '#df171dff', '#df161dff', '#de161dff', '#dd161dff', '#dd151dff', '#dc151eff', '#dc141eff', '#db141eff', '#da131eff', '#da131eff', '#d9131eff', '#d9121eff', '#d8121fff', '#d7111fff', '#d7111fff', '#d6111fff', '#d5101fff', '#d5101fff', '#d40f20ff', '#d40f20ff', '#d30e20ff', '#d20e20ff', '#d20e20ff', '#d10d20ff', '#d10d21ff', '#d00c21ff', '#cf0c21ff', '#cf0b21ff', '#ce0b21ff', '#ce0b21ff', '#cd0a22ff', '#cc0a22ff', '#cc0922ff', '#cb0922ff', '#ca0922ff', '#ca0822ff', '#c90822ff', '#c90723ff', '#c80723ff', '#c70623ff', '#c70623ff', '#c60623ff', '#c60523ff', '#c50524ff', '#c40424ff', '#c40424ff', '#c30424ff', '#c30324ff', '#c20324ff', '#c10225ff', '#c10225ff', '#c00125ff', '#bf0125ff', '#bf0125ff', '#be0025ff', '#be0026ff', '#bd0026ff', '#bc0026ff', '#bb0026ff', '#ba0026ff', '#b90026ff', '#b80026ff', '#b70026ff', '#b60026ff', '#b50026ff', '#b40026ff', '#b30026ff', '#b20026ff', '#b10026ff', '#b00026ff', '#af0026ff', '#ae0026ff', '#ad0026ff', '#ac0026ff', '#ab0026ff', '#aa0026ff', '#a90026ff', '#a80026ff', '#a70026ff', '#a60026ff', '#a50026ff', '#a40026ff', '#a30026ff', '#a20026ff', '#a10026ff', '#a00026ff', '#9f0026ff', '#9e0026ff', '#9d0026ff', '#9c0026ff', '#9b0026ff', '#9b0026ff', '#9a0026ff', '#990026ff', '#980026ff', '#970026ff', '#960026ff', '#950026ff', '#940026ff', '#930026ff', '#920026ff', '#910026ff', '#900026ff', '#8f0026ff', '#8e0026ff', '#8d0026ff', '#8c0026ff', '#8b0026ff', '#8a0026ff', '#890026ff', '#880026ff', '#870026ff', '#860026ff', '#850026ff', '#840026ff', '#830026ff', '#820026ff', '#810026ff', '#800026ff']);
+    
+
+    color_map_5c18252e228df2548aee4ed1045e109d.x = d3.scale.linear()
+              .domain([6000.0, 350000.0])
+              .range([0, 450 - 50]);
+
+    color_map_5c18252e228df2548aee4ed1045e109d.legend = L.control({position: 'topright'});
+    color_map_5c18252e228df2548aee4ed1045e109d.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_5c18252e228df2548aee4ed1045e109d.legend.addTo(map_c67702b3f073adb1c184ef6fb9a5e13a);
+
+    color_map_5c18252e228df2548aee4ed1045e109d.xAxis = d3.svg.axis()
+        .scale(color_map_5c18252e228df2548aee4ed1045e109d.x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues([6000.0, 49000.0, 92000.0, 135000.0, 178000.0, 221000.0, 264000.0, 307000.0, 350000.0]);
+
+    color_map_5c18252e228df2548aee4ed1045e109d.svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    color_map_5c18252e228df2548aee4ed1045e109d.g = color_map_5c18252e228df2548aee4ed1045e109d.svg.append("g")
+        .attr("class", "key")
+        .attr("fill", "black")
+        .attr("transform", "translate(25,16)");
+
+    color_map_5c18252e228df2548aee4ed1045e109d.g.selectAll("rect")
+        .data(color_map_5c18252e228df2548aee4ed1045e109d.color.range().map(function(d, i) {
+          return {
+            x0: i ? color_map_5c18252e228df2548aee4ed1045e109d.x(color_map_5c18252e228df2548aee4ed1045e109d.color.domain()[i - 1]) : color_map_5c18252e228df2548aee4ed1045e109d.x.range()[0],
+            x1: i < color_map_5c18252e228df2548aee4ed1045e109d.color.domain().length ? color_map_5c18252e228df2548aee4ed1045e109d.x(color_map_5c18252e228df2548aee4ed1045e109d.color.domain()[i]) : color_map_5c18252e228df2548aee4ed1045e109d.x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 40 - 30)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    color_map_5c18252e228df2548aee4ed1045e109d.g.call(color_map_5c18252e228df2548aee4ed1045e109d.xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .attr("fill", "black")
+        .text("Median Rent (KES)");
+    
+            var feature_group_27a68025a4b981ec1affc3bf975d0f3c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_63ded1e1091029cb61e8d79dd0749fd8 = L.circleMarker(
+                [-1.2884, 36.7889],
+                {"bubblingMouseEvents": true, "color": "#fff0a7ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fff0a7ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.4399999999999995, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_63ded1e1091029cb61e8d79dd0749fd8.bindTooltip(
+                `<div>
+                     
+                <b>Kilimani</b><br>
+                Median Rent: <b>KES 42,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_31114e04a3c93ee5b572aaaa12d8167d = L.circleMarker(
+                [-1.2604, 36.8194],
+                {"bubblingMouseEvents": true, "color": "#fff1a8ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fff1a8ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.4228571428571435, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_31114e04a3c93ee5b572aaaa12d8167d.bindTooltip(
+                `<div>
+                     
+                <b>Parklands</b><br>
+                Median Rent: <b>KES 41,500</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_309442a0109966c875811b657d4492ce = L.circleMarker(
+                [-1.2822, 36.8319],
+                {"bubblingMouseEvents": true, "color": "#ffffcbff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffffcbff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.265714285714286, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_309442a0109966c875811b657d4492ce.bindTooltip(
+                `<div>
+                     
+                <b>Ngara</b><br>
+                Median Rent: <b>KES 7,750</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_afb29bca9cc899eb011e3091fad8291d = L.circleMarker(
+                [-1.2735, 36.8448],
+                {"bubblingMouseEvents": true, "color": "#fffdc6ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffdc6ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.411428571428571, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_afb29bca9cc899eb011e3091fad8291d.bindTooltip(
+                `<div>
+                     
+                <b>Pangani</b><br>
+                Median Rent: <b>KES 12,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4b161d8b7f73cc183e5033fc5a1e5294 = L.circleMarker(
+                [-1.2175, 36.8677],
+                {"bubblingMouseEvents": true, "color": "#fffdc6ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffdc6ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.42, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_4b161d8b7f73cc183e5033fc5a1e5294.bindTooltip(
+                `<div>
+                     
+                <b>Roysambu</b><br>
+                Median Rent: <b>KES 12,250</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7a167620f4e9ca9ffdab886446970eb5 = L.circleMarker(
+                [-1.2167, 36.8993],
+                {"bubblingMouseEvents": true, "color": "#fffcc3ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffcc3ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.514285714285714, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_7a167620f4e9ca9ffdab886446970eb5.bindTooltip(
+                `<div>
+                     
+                <b>Kasarani</b><br>
+                Median Rent: <b>KES 15,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b6e895507dcc5bc0d40943617c889136 = L.circleMarker(
+                [-1.2804, 36.9666],
+                {"bubblingMouseEvents": true, "color": "#fff8b9ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fff8b9ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.857142857142857, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_b6e895507dcc5bc0d40943617c889136.bindTooltip(
+                `<div>
+                     
+                <b>Ruai</b><br>
+                Median Rent: <b>KES 25,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_88ab0906f2dd7216cdb3963ea84e4636 = L.circleMarker(
+                [-1.3186, 36.883],
+                {"bubblingMouseEvents": true, "color": "#fffbc2ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffbc2ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.548571428571429, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_88ab0906f2dd7216cdb3963ea84e4636.bindTooltip(
+                `<div>
+                     
+                <b>Embakasi</b><br>
+                Median Rent: <b>KES 16,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7bd3e722406c8d90834146dd91dad955 = L.circleMarker(
+                [-1.1886, 36.9145],
+                {"bubblingMouseEvents": true, "color": "#fffcc4ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffcc4ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.48, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_7bd3e722406c8d90834146dd91dad955.bindTooltip(
+                `<div>
+                     
+                <b>Kahawa West</b><br>
+                Median Rent: <b>KES 14,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4f4c789df459aa059f2ee1ef0284b583 = L.circleMarker(
+                [-1.1712, 36.9218],
+                {"bubblingMouseEvents": true, "color": "#fffac0ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffac0ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.617142857142857, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_4f4c789df459aa059f2ee1ef0284b583.bindTooltip(
+                `<div>
+                     
+                <b>Kahawa North</b><br>
+                Median Rent: <b>KES 18,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0f4d4ed3d72e399dc3e68d8ac3d568b1 = L.circleMarker(
+                [-1.2756, 36.9107],
+                {"bubblingMouseEvents": true, "color": "#fffdc6ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffdc6ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.411428571428571, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_0f4d4ed3d72e399dc3e68d8ac3d568b1.bindTooltip(
+                `<div>
+                     
+                <b>Komarock</b><br>
+                Median Rent: <b>KES 12,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b0f4fce8f02c46b1f2d152aac7534a0e = L.circleMarker(
+                [-1.2867, 36.9344],
+                {"bubblingMouseEvents": true, "color": "#fffbc2ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffbc2ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.548571428571429, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_b0f4fce8f02c46b1f2d152aac7534a0e.bindTooltip(
+                `<div>
+                     
+                <b>Utawala</b><br>
+                Median Rent: <b>KES 16,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c37161a4949a725346e5c3ff8634c83d = L.circleMarker(
+                [-1.2038, 36.8461],
+                {"bubblingMouseEvents": true, "color": "#fffabeff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffabeff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.685714285714286, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_c37161a4949a725346e5c3ff8634c83d.bindTooltip(
+                `<div>
+                     
+                <b>Thindigua</b><br>
+                Median Rent: <b>KES 20,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5844c36a8a1db5f8a43e4a5fba13d7f4 = L.circleMarker(
+                [-1.3264, 36.8986],
+                {"bubblingMouseEvents": true, "color": "#ffffccff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffffccff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.2057142857142855, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_5844c36a8a1db5f8a43e4a5fba13d7f4.bindTooltip(
+                `<div>
+                     
+                <b>Imara Daima</b><br>
+                Median Rent: <b>KES 6,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a689c16603676b1618bf0f6652db57d2 = L.circleMarker(
+                [-1.3047, 36.7858],
+                {"bubblingMouseEvents": true, "color": "#fffcc5ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffcc5ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.454285714285715, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_a689c16603676b1618bf0f6652db57d2.bindTooltip(
+                `<div>
+                     
+                <b>Woodley</b><br>
+                Median Rent: <b>KES 13,250</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b6e81423691db55adf3ae3dcd1a2fa4f = L.circleMarker(
+                [-1.2914, 36.897],
+                {"bubblingMouseEvents": true, "color": "#ffffcaff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffffcaff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.274285714285714, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_b6e81423691db55adf3ae3dcd1a2fa4f.bindTooltip(
+                `<div>
+                     
+                <b>Umoja</b><br>
+                Median Rent: <b>KES 8,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_68683d9bd2e07fe58e3dfcc52b392ced = L.circleMarker(
+                [-1.2779, 36.8458],
+                {"bubblingMouseEvents": true, "color": "#fff8b9ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fff8b9ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.857142857142857, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_68683d9bd2e07fe58e3dfcc52b392ced.bindTooltip(
+                `<div>
+                     
+                <b>Eastleigh South</b><br>
+                Median Rent: <b>KES 25,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2127d8ba3237719b0834772a4fa64e86 = L.circleMarker(
+                [-1.273, 36.8485],
+                {"bubblingMouseEvents": true, "color": "#fffec8ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffec8ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.3428571428571425, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_2127d8ba3237719b0834772a4fa64e86.bindTooltip(
+                `<div>
+                     
+                <b>Eastleigh North</b><br>
+                Median Rent: <b>KES 10,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_36d5b53365eea9b0860d359f11d84452 = L.circleMarker(
+                [-1.3141, 36.8072],
+                {"bubblingMouseEvents": true, "color": "#fffac0ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffac0ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.617142857142857, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_36d5b53365eea9b0860d359f11d84452.bindTooltip(
+                `<div>
+                     
+                <b>Madaraka</b><br>
+                Median Rent: <b>KES 18,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_744f088a4aa7d0e5dadd7628ff654974 = L.circleMarker(
+                [-1.2076, 36.881],
+                {"bubblingMouseEvents": true, "color": "#fffec8ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffec8ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.351428571428571, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_744f088a4aa7d0e5dadd7628ff654974.bindTooltip(
+                `<div>
+                     
+                <b>Zimmerman</b><br>
+                Median Rent: <b>KES 10,250</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_da6b9381153e1750d2e9251ae10daf00 = L.circleMarker(
+                [-1.2417, 36.9586],
+                {"bubblingMouseEvents": true, "color": "#fffcc3ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffcc3ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.514285714285714, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_da6b9381153e1750d2e9251ae10daf00.bindTooltip(
+                `<div>
+                     
+                <b>Chokaa</b><br>
+                Median Rent: <b>KES 15,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_43095f79746ce9b42ea81ed36adc92bf = L.circleMarker(
+                [-1.3178, 36.8196],
+                {"bubblingMouseEvents": true, "color": "#fffdc5ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffdc5ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.445714285714286, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_43095f79746ce9b42ea81ed36adc92bf.bindTooltip(
+                `<div>
+                     
+                <b>Nairobi West</b><br>
+                Median Rent: <b>KES 13,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bb9e7b17328a16c0dff2daae7ca5a1a3 = L.circleMarker(
+                [-1.3284, 36.8316],
+                {"bubblingMouseEvents": true, "color": "#fffabfff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffabfff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.642857142857142, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_bb9e7b17328a16c0dff2daae7ca5a1a3.bindTooltip(
+                `<div>
+                     
+                <b>Nairobi South</b><br>
+                Median Rent: <b>KES 18,750</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_efeb24adb544c84516350b22e31b7ac6 = L.circleMarker(
+                [-1.2977, 36.865],
+                {"bubblingMouseEvents": true, "color": "#fffdc6ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffdc6ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.428571428571429, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_efeb24adb544c84516350b22e31b7ac6.bindTooltip(
+                `<div>
+                     
+                <b>Makadara</b><br>
+                Median Rent: <b>KES 12,500</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5021516f8257d72204310069909d3788 = L.circleMarker(
+                [-1.3404, 36.7588],
+                {"bubblingMouseEvents": true, "color": "#fff9bcff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fff9bcff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.7542857142857144, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_5021516f8257d72204310069909d3788.bindTooltip(
+                `<div>
+                     
+                <b>Mugumo-Ini (Langata)</b><br>
+                Median Rent: <b>KES 22,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_261f6b8bf7de4af446152f0da1d96385 = L.circleMarker(
+                [-1.2675, 36.7282],
+                {"bubblingMouseEvents": true, "color": "#fffecaff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffecaff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.291428571428572, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_261f6b8bf7de4af446152f0da1d96385.bindTooltip(
+                `<div>
+                     
+                <b>Uthiru/Ruthimitu</b><br>
+                Median Rent: <b>KES 8,500</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f71271d06e66ba19f964fbfd169477b0 = L.circleMarker(
+                [-1.3535, 36.7362],
+                {"bubblingMouseEvents": true, "color": "#fffec8ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffec8ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.3428571428571425, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_f71271d06e66ba19f964fbfd169477b0.bindTooltip(
+                `<div>
+                     
+                <b>Lower Savannah</b><br>
+                Median Rent: <b>KES 10,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_088d181a820990cd86ee8d817763f80c = L.circleMarker(
+                [-1.2498, 36.7575],
+                {"bubblingMouseEvents": true, "color": "#fffcc3ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffcc3ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.514285714285714, "stroke": true, "weight": 3}
+            ).addTo(feature_group_27a68025a4b981ec1affc3bf975d0f3c);
+        
+    
+            circle_marker_088d181a820990cd86ee8d817763f80c.bindTooltip(
+                `<div>
+                     
+                <b>Mountain View</b><br>
+                Median Rent: <b>KES 15,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_27a68025a4b981ec1affc3bf975d0f3c.addTo(map_c67702b3f073adb1c184ef6fb9a5e13a);
+        
+    
+            var feature_group_37328aabbc625c3836b4b8c8a9595582 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_893fc7a21c3c342e11e02e88771d1c9e = L.circleMarker(
+                [-1.2793, 36.7812],
+                {"bubblingMouseEvents": true, "color": "#ffe690ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffe690ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8.228571428571428, "stroke": true, "weight": 3}
+            ).addTo(feature_group_37328aabbc625c3836b4b8c8a9595582);
+        
+    
+            circle_marker_893fc7a21c3c342e11e02e88771d1c9e.bindTooltip(
+                `<div>
+                     
+                <b>Kileleshwa</b><br>
+                Median Rent: <b>KES 65,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_37328aabbc625c3836b4b8c8a9595582.addTo(map_c67702b3f073adb1c184ef6fb9a5e13a);
+        
+    
+            var feature_group_0df9ae637ab6c955a054e009be1a0701 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_bbb9b03b3aeec36de3e64c9af0d2291b = L.circleMarker(
+                [-1.2927, 36.7814],
+                {"bubblingMouseEvents": true, "color": "#f74327ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f74327ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 13.885714285714286, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0df9ae637ab6c955a054e009be1a0701);
+        
+    
+            circle_marker_bbb9b03b3aeec36de3e64c9af0d2291b.bindTooltip(
+                `<div>
+                     
+                <b>Lavington</b><br>
+                Median Rent: <b>KES 230,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_845733ea1d09861cf96390f275a6b256 = L.circleMarker(
+                [-1.2341, 36.7699],
+                {"bubblingMouseEvents": true, "color": "#c30424ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c30424ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.285714285714285, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0df9ae637ab6c955a054e009be1a0701);
+        
+    
+            circle_marker_845733ea1d09861cf96390f275a6b256.bindTooltip(
+                `<div>
+                     
+                <b>Kitisuru</b><br>
+                Median Rent: <b>KES 300,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5a32df85e72ebd92387149b7e25756b6 = L.circleMarker(
+                [-1.2615, 36.802],
+                {"bubblingMouseEvents": true, "color": "#feae4aff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#feae4aff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.8, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0df9ae637ab6c955a054e009be1a0701);
+        
+    
+            circle_marker_5a32df85e72ebd92387149b7e25756b6.bindTooltip(
+                `<div>
+                     
+                <b>Westlands</b><br>
+                Median Rent: <b>KES 140,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b38f7d88d148f9c6a84a4584a43dac74 = L.circleMarker(
+                [-1.2535, 36.8337],
+                {"bubblingMouseEvents": true, "color": "#fec762ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fec762ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9.84, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0df9ae637ab6c955a054e009be1a0701);
+        
+    
+            circle_marker_b38f7d88d148f9c6a84a4584a43dac74.bindTooltip(
+                `<div>
+                     
+                <b>Muthaiga</b><br>
+                Median Rent: <b>KES 112,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_eeb0c3a2cecf4f618964f9442b57d105 = L.circleMarker(
+                [-1.3319, 36.6864],
+                {"bubblingMouseEvents": true, "color": "#fe8d3cff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fe8d3cff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.085714285714285, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0df9ae637ab6c955a054e009be1a0701);
+        
+    
+            circle_marker_eeb0c3a2cecf4f618964f9442b57d105.bindTooltip(
+                `<div>
+                     
+                <b>Karen</b><br>
+                Median Rent: <b>KES 177,500</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8eb0709048117b665c5db5f4bf3327ef = L.circleMarker(
+                [-1.2549, 36.7757],
+                {"bubblingMouseEvents": true, "color": "#800026ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#800026ff", "fillOpacity": 0.75, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0df9ae637ab6c955a054e009be1a0701);
+        
+    
+            circle_marker_8eb0709048117b665c5db5f4bf3327ef.bindTooltip(
+                `<div>
+                     
+                <b>Spring Valley</b><br>
+                Median Rent: <b>KES 350,000</b>
+                
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_0df9ae637ab6c955a054e009be1a0701.addTo(map_c67702b3f073adb1c184ef6fb9a5e13a);
+        
+    
+            var layer_control_4aa92d3e23e154cdc0b8f7d564e45c37_layers = {
+                base_layers : {
+                    "cartodbpositron" : tile_layer_6eebc27fcdca2fd07bbbc6bd5d62bc80,
+                },
+                overlays :  {
+                    "Affordable Areas" : feature_group_27a68025a4b981ec1affc3bf975d0f3c,
+                    "Mid-range Areas" : feature_group_37328aabbc625c3836b4b8c8a9595582,
+                    "Premium Areas" : feature_group_0df9ae637ab6c955a054e009be1a0701,
+                },
+            };
+            let layer_control_4aa92d3e23e154cdc0b8f7d564e45c37 = L.control.layers(
+                layer_control_4aa92d3e23e154cdc0b8f7d564e45c37_layers.base_layers,
+                layer_control_4aa92d3e23e154cdc0b8f7d564e45c37_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_c67702b3f073adb1c184ef6fb9a5e13a);
+
+        
+</script>
+</html>
